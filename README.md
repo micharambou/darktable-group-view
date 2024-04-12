@@ -16,7 +16,7 @@ Installation
   
 ### Create collection preset `group-view`
 
-* In Collection module add a new collection preset and name it `group-view`. Select `tag` as filter criteria. You may have to create the corresponding tag once by yourself to be able to select it as a value for your preset.
+* In Collection module add a new collection preset and name it `group-view`. Select `tag` as filter criteria. You may have to create the corresponding tag and assign it to at least one image once and by yourself to be able to select it as a value for your preset.
 
 Usage
 -----
