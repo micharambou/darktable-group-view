@@ -15,8 +15,6 @@ darktable-group-view.git`
 * in the category box enter `dt-group-view`
 * click the `Install additional scripts` button
   
-### Create collection preset `group-view`
-
 Usage
 -----
 Select a single image and hit `Toogle group-view` button or press assigned shortcut to enable group-view mode.
