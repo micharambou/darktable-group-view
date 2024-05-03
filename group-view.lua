@@ -5,18 +5,9 @@ local MODULE = "group-view"
 
 du.check_min_api_version("9.1.0", MODULE)
 
-if dt.tags.find("group-view") == nil then
-	dt.tags.create("group-view")
-end
-local filter_tag = dt.tags.find("group-view")
-
 local group_view_active = false
-local previous = nil
-
-local filter_rule = dt.gui.libs.collect.new_rule()
-filter_rule.mode = "DT_LIB_COLLECT_MODE_AND"
-filter_rule.data = "group-view"
-filter_rule.item = "DT_COLLECTION_PROP_TAG"
+local collection_rules = {}
+local selected_images = {}
 
 local function tablelength(t)
 	local count = 0
@@ -27,39 +18,25 @@ local function tablelength(t)
 end
 
 local function cleanup()
-	for _, image in pairs(dt.tags.get_tagged_images(filter_tag)) do
-		dt.tags.detach(filter_tag, image)
-	end
+	dt.gui.libs.collect.filter(collection_rules)
 end
 
 cleanup()
-
-local function append_filter_rule_to_collection()
-	previous = dt.gui.libs.collect.filter()
-	local current = {}
-	for _, prev_rule in pairs(previous) do
-		table.insert(current, prev_rule)
-	end
-	table.insert(current, filter_rule)
-	dt.gui.libs.collect.filter(current)
-end
-
-local selected_images = {}
 
 local function toogle_group_view(_, _)
 	if not group_view_active then
 		group_view_active = true
 		local image = table.unpack(dt.gui.selection())
-		local t_image_group = image:get_group_members()
-		for _, image in pairs(t_image_group) do
-			dt.tags.attach(filter_tag, image)
-		end
-		-- dt.gui.action("lib/collect/preset/group-view", 1, 000)
-        append_filter_rule_to_collection()
+		collection_rules = dt.gui.libs.collect.filter()
+		local filter_rule = dt.gui.libs.collect.new_rule()
+		filter_rule.mode = "DT_LIB_COLLECT_MODE_AND"
+		filter_rule.data = tostring(image.group_leader.id)
+		filter_rule.item = "DT_COLLECTION_PROP_GROUP_ID"
+		table.insert(collection_rules, filter_rule)
+		collection_rules = dt.gui.libs.collect.filter(collection_rules)
 		return { image }
 	else
 		group_view_active = false
-		dt.gui.action("lib/collect/jump back to previous collection", 1, 000)
 		cleanup()
 		return selected_images
 	end
