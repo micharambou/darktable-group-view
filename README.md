@@ -3,8 +3,6 @@ darktable group-view
 This adds a shortcut and a "Toogle group-view" button in darktable's lighttable selection module.
 In group-view mode, only images that are grouped together are shown.
 
-To achieve this, a temporary tag "group-view" becomes attached to affected images and the current collection filter expanded by this filter tag. Once `group-view` mode is left, all attached `group-view` tags become cleaned up.
-
 Installation
 ------------
 ### Using script_manager
