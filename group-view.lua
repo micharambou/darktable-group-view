@@ -3,7 +3,7 @@ local du = require("lib/dtutils")
 
 local MODULE = "group-view"
 
-du.check_min_api_version("9.1.0", MODULE)
+du.check_min_api_version("9.3.0", MODULE)
 
 local group_view_active = false
 local collection_rules = {}
@@ -19,6 +19,10 @@ end
 
 local function cleanup()
 	dt.gui.libs.collect.filter(collection_rules)
+	if tablelength(dt.gui.selection()) == 1 then
+		local image = table.unpack(dt.gui.selection())
+		dt.gui.views.lighttable.set_image_visible(image)
+	end
 end
 
 cleanup()
@@ -61,7 +65,7 @@ dt.register_event("group-view: image selection changed", "selection-changed", fu
 	if next(dt.gui.selection()) == nil and not group_view_active then
 		dt.gui.libs.select.set_sensitive(MODULE, false)
 		selected_images = nil
-		cleanup()
+		-- cleanup()
 	end
 	if tablelength(dt.gui.selection()) == 1 then
 		dt.gui.libs.select.set_sensitive(MODULE, true)
@@ -77,7 +81,7 @@ dt.register_event("toogle group view", "shortcut", function()
 	if next(dt.gui.selection()) == nil and not group_view_active then
 		dt.gui.libs.select.set_sensitive(MODULE, false)
 		selected_images = nil
-		cleanup()
+		-- cleanup()
 	end
 	if next(dt.gui.selection()) == nil and group_view_active then
 		selected_images = nil
